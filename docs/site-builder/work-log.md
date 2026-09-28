@@ -9,3 +9,7 @@ Created: `site.config.json`, `site/` four routes and stylesheet, `scripts/site-b
 Validation: static route/link/asset/metadata build PASS for four pages; additional checks and PR evidence follow in the session continuation. Blocker: publication requires a deliberate GitHub Pages configuration and owner authorization. Next action: validate branch, open PR, then review deployment choice.
 
 Session continuation: Added `repository-assessment.json` and `.github/workflows/site-check.yml`. Site is COMPLETE for repository-controlled work; public deployment is separately blocked pending hosting authorization. Static build and local-link checks PASS; Python syntax PASS; diff whitespace PASS; no frontend install, lint, or typecheck is required. Browser-based responsive and accessibility review remain limited to source inspection in this environment.
+
+## 2026-09-28 10:20 America/Chicago
+
+Task: Added a loopback-only allowlisted lookup form and backend after owner request. Created `web/server.py`, `site/lookup/`, `tests/test_web.py`, and `.env.example`; updated navigation, site manifest, CI, README, architecture, content, deployment and validation documentation. Validation: five-route static build and mocked local HTTP tests. No third-party live lookups, public backend, or deployment performed. Next action: merge the validated guide PR, then land this feature through its own reviewable PR.

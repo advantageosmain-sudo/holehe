@@ -242,7 +242,7 @@ Built for educational purposes only.
 
 ## Static project guide in this fork
 
-This fork includes a four-page documentation site in [`site/`](site/) and a reusable repository website builder in [`.github/agents/site-builder-orchestrator.md`](.github/agents/site-builder-orchestrator.md). It does not run the Holehe CLI in a browser or collect email addresses.
+This fork includes a four-page documentation site in [`site/`](site/) and a reusable repository website builder in [`.github/agents/site-builder-orchestrator.md`](.github/agents/site-builder-orchestrator.md). The static pages do not run checks; the optional local backend receives one submitted address in memory to perform an authorized check.
 
 - Build and validate: `python3 scripts/site-builder/build.py`
 - Preview: `python3 -m http.server 8000 --directory dist`, then open `http://localhost:8000/`
@@ -252,3 +252,16 @@ This fork includes a four-page documentation site in [`site/`](site/) and a reus
 - For a later repository-to-website run, give ChatGPT Work this repository and request [the builder prompt](.github/prompts/build-site.md). The repository-local roles and skills are instructions to follow, not automatically installed personal agents.
 
 The original Python package instructions above remain the upstream project documentation.
+
+### Local email lookup form
+
+The `site/lookup/` page runs only through `web/server.py` on your computer. It accepts **one configured email address**, uses the existing GitHub, Gravatar, and WordPress modules, and shows registration states without recovery details. It limits checks to one every five minutes. It does not save results or addresses. Service behavior can change; results may be uncertain. The CLI's automatic update path is not called.
+
+1. Install Python 3 and create a virtual environment: `python3 -m venv .venv`.
+2. Activate it: macOS/Linux `source .venv/bin/activate`; Windows PowerShell `.venv\\Scripts\\Activate.ps1`.
+3. Install the existing package dependencies: `python3 -m pip install -e .` (Windows: `python -m pip install -e .`).
+4. Set an address you own or have permission to check, without saving it in the repository: macOS/Linux `export HOLEHE_ALLOWED_EMAIL='you@example.com'`; Windows PowerShell `$env:HOLEHE_ALLOWED_EMAIL='you@example.com'`.
+5. Run `python3 web/server.py` (Windows: `python web/server.py`), then open `http://127.0.0.1:8765/lookup/` on the same computer. Stop with Ctrl+C.
+6. Run backend tests with `python3 -m unittest discover -s tests`.
+
+The server binds to `127.0.0.1` only. The static guide can be hosted separately, but GitHub Pages cannot run this Python backend; its lookup form would be unavailable there. Do not expose the server directly to the public internet.
