@@ -37,6 +37,6 @@
   },
   "externalDeployment": {
     "status": "BLOCKED",
-    "blocker": "Railway sign-in, project connection, selected permitted email, runtime settings and verified HTTPS domain are required."
+    "blocker": "Railway GitHub app authorization for this repository, selected permitted email, runtime secrets and verified HTTPS domain are required."
   }
 }
