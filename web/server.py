@@ -45,7 +45,10 @@ def scan(email, modules=DEFAULT_MODULES):
             async def one(name):
                 module = importlib.import_module("holehe.modules." + MODULE_PATHS[name])
                 try:
-                    await getattr(module, name)(email, client, output)
+                    with trio.move_on_after(20) as scope:
+                        await getattr(module, name)(email, client, output)
+                    if scope.cancelled_caught:
+                        output.append({"name": name, "error": True})
                 except Exception:
                     output.append({"name": name, "error": True})
             async with trio.open_nursery() as nursery:

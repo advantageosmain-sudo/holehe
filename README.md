@@ -265,3 +265,15 @@ The `site/lookup/` page runs only through `web/server.py` on your computer. It a
 6. Run backend tests with `python3 -m unittest discover -s tests`.
 
 The server binds to `127.0.0.1` only. The static guide can be hosted separately, but GitHub Pages cannot run this Python backend; its lookup form would be unavailable there. Do not expose the server directly to the public internet.
+
+### Railway backend for the private Sites interface
+
+The hosted adapter is `web/hosted.py`. Railway reads `railway.json` and builds `Dockerfile.railway`; no database is required. The container runs one non-root Uvicorn worker and accepts only authenticated requests for one permitted email address. The original loopback server above remains available.
+
+- Install hosted/test dependencies: `python3 -m pip install -r requirements-hosted.lock` (Python 3.12).
+- Validate: `python3 -m unittest discover -s tests` and `python3 scripts/site-builder/build.py`.
+- Set `LOOKUP_API_TOKEN` and `HOLEHE_ALLOWED_EMAIL` securely in Railway runtime variables. The token must be random and at least 32 ASCII characters. The application refuses to start without valid settings.
+- Connect Railway's verified HTTPS URL and the matching values to the private Sites interface's server runtime configuration.
+- Follow [deployment instructions](docs/site-builder/deployment.md) for endpoints, health checks, one-replica constraints and rollback.
+
+GitHub CI builds and smoke-tests the container with synthetic credentials, without live lookups. A successful build does not mean a Railway service has been deployed; live deployment still needs account access and runtime configuration. Never paste production secrets into this repository.

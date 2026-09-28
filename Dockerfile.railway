@@ -1,0 +1,11 @@
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY requirements-hosted.lock ./
+RUN pip install --no-cache-dir -r requirements-hosted.lock
+COPY setup.py README.md LICENSE.md ./
+COPY holehe ./holehe
+COPY web ./web
+RUN useradd --create-home --uid 10001 appuser
+USER appuser
+CMD ["sh", "-c", "exec python -m uvicorn web.hosted:create_app --factory --host 0.0.0.0 --port ${PORT:-8000} --workers 1 --limit-concurrency 16 --timeout-keep-alive 5 --no-access-log"]

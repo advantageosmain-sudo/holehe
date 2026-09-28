@@ -9,3 +9,9 @@ Public sources: README, setup.py, LICENSE. CLI modules and operational implement
 ## Local lookup extension
 
 `web/server.py` serves the static pages and a same-origin JSON POST endpoint on loopback only. An exact address from `HOLEHE_ALLOWED_EMAIL` is required; a process lock and five-minute cooldown bound use. The scanner imports three existing service modules directly and omits the CLI's update/install behavior. It returns only service and status, not masked recovery details or raw provider responses. No lookup history is stored. The static output `dist/` alone cannot run the endpoint.
+
+## Hosted Railway extension
+
+`web/hosted.py` wraps the shared scanner in FastAPI for an authenticated server-to-server API. The private Sites interface supplies the browser UI and forwards allowed requests through its server. Railway serves only `/healthz`, authenticated `/health`, and authenticated `/api/lookup`; it does not publish repository files or run the static form. Uvicorn uses one worker and Railway one replica to preserve the in-memory lock and five-minute cooldown. Each module has a 20-second deadline. A database and job queue are unnecessary for the current single-address, low-volume interface. Scaling requires shared rate-limit/queue state first.
+
+Railway runtime settings and the Sites token stay outside Git. The API returns only three service names and bounded status values. No account recovery details, raw provider bodies or lookup history are exposed. The existing CLI, local server and documentation routes are preserved.
