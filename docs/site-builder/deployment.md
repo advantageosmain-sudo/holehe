@@ -2,7 +2,7 @@
 
 ## Current deployment model
 
-The fork keeps its static guide and optional loopback server. The private ChatGPT Sites interface runs separately as `holehe-project-guide`; it proxies requests from its server to this repository's authenticated Railway API. The browser never receives the API token. Railway is the selected backend host. Account sign-in, project connection, runtime values and a verified HTTPS domain are still required; no hosted backend URL is assumed.
+The fork keeps its static guide and optional loopback server. The private ChatGPT Sites interface runs separately as `holehe-project-guide`; it proxies requests from its server to this repository's authenticated Railway API. The browser never receives the API token. Railway is the selected backend host. Railway sign-in is complete. GitHub app authorization, project connection, runtime values and a verified HTTPS domain are still required; no hosted backend URL is assumed.
 
 ## Railway backend
 
