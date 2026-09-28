@@ -37,6 +37,6 @@
   },
   "externalDeployment": {
     "status": "BLOCKED",
-    "blocker": "GitHub Mobile verification timed out during scoped Railway GitHub app installation. Source connection, owner-permitted email, runtime secret, service deployment and HTTPS domain remain."
+    "blocker": "Scoped Railway GitHub app installation succeeded. The Holehe repo and master branch, Dockerfile builder, and health check are staged in the offline service. Owner-permitted email and production runtime secret are required before applying changes, deploying, and generating a verified HTTPS domain."
   }
 }
