@@ -5,12 +5,16 @@ on:
       - 'site/**'
       - 'site.config.json'
       - 'scripts/site-builder/**'
+      - 'web/**'
+      - 'tests/**'
       - '.github/workflows/site-check.yml'
   pull_request:
     paths:
       - 'site/**'
       - 'site.config.json'
       - 'scripts/site-builder/**'
+      - 'web/**'
+      - 'tests/**'
       - '.github/workflows/site-check.yml'
 jobs:
   build:
@@ -24,3 +28,5 @@ jobs:
           python-version: '3.11'
       - name: Validate and build static site
         run: python3 scripts/site-builder/build.py
+      - name: Test local backend without network lookups
+        run: python3 -m unittest discover -s tests

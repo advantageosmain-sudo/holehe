@@ -10,14 +10,17 @@
     "/",
     "/install/",
     "/usage/",
-    "/privacy/"
+    "/privacy/",
+    "/lookup/"
   ],
   "contentSources": [
     "README.md",
     "setup.py",
     "LICENSE.md"
   ],
-  "deploymentTarget": "GitHub Pages (manual configuration required)",
-  "environmentVariables": [],
+  "deploymentTarget": "Local loopback server; public deployment not configured",
+  "environmentVariables": [
+    "HOLEHE_ALLOWED_EMAIL"
+  ],
   "status": "COMPLETE"
 }
