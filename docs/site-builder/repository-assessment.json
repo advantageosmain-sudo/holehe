@@ -1,0 +1,17 @@
+{
+  "repository": "advantageosmain-sudo/holehe",
+  "upstream": "megadose/holehe",
+  "baseBranch": "master",
+  "baseCommit": "14da70f588538936b20d238783c5e28a0772a2b3",
+  "projectType": "Python command-line package",
+  "existingFrontend": false,
+  "packageManifest": "setup.py",
+  "applicationSource": "holehe/",
+  "canonicalContent": ["README.md", "setup.py", "LICENSE.md"],
+  "existingWorkflows": [".github/workflows/codeql-analysis.yml"],
+  "existingHosting": null,
+  "environmentVariablesForSite": [],
+  "siteChoice": "static documentation",
+  "preserved": ["Python package", "Dockerfile", "existing CodeQL workflow", "upstream README content"],
+  "publicPrivateBoundary": "No CLI invocation, email collection, lookup endpoint, service results, or runtime credentials in the site"
+}

@@ -1,0 +1,26 @@
+name: Site check
+on:
+  push:
+    paths:
+      - 'site/**'
+      - 'site.config.json'
+      - 'scripts/site-builder/**'
+      - '.github/workflows/site-check.yml'
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'site.config.json'
+      - 'scripts/site-builder/**'
+      - '.github/workflows/site-check.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate and build static site
+        run: python3 scripts/site-builder/build.py

@@ -1,0 +1,23 @@
+{
+  "siteName": "Holehe project guide",
+  "siteType": "static documentation",
+  "framework": "vanilla HTML and CSS",
+  "sourceDirectory": "site",
+  "buildCommand": "python3 scripts/site-builder/build.py",
+  "devCommand": "python3 -m http.server 8000 --directory site",
+  "outputDirectory": "dist",
+  "pages": [
+    "/",
+    "/install/",
+    "/usage/",
+    "/privacy/"
+  ],
+  "contentSources": [
+    "README.md",
+    "setup.py",
+    "LICENSE.md"
+  ],
+  "deploymentTarget": "GitHub Pages (manual configuration required)",
+  "environmentVariables": [],
+  "status": "COMPLETE"
+}
