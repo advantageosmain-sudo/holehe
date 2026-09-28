@@ -262,7 +262,7 @@ The `site/lookup/` page runs only through `web/server.py` on your computer. It a
 3. Install the existing package dependencies: `python3 -m pip install -e .` (Windows: `python -m pip install -e .`).
 4. Set an address you own or have permission to check, without saving it in the repository: macOS/Linux `export HOLEHE_ALLOWED_EMAIL='you@example.com'`; Windows PowerShell `$env:HOLEHE_ALLOWED_EMAIL='you@example.com'`.
 5. Run `python3 web/server.py` (Windows: `python web/server.py`), then open `http://127.0.0.1:8765/lookup/` on the same computer. Stop with Ctrl+C.
-6. Run backend tests with `python3 -m unittest discover -s tests`.
+6. Run local backend tests with `python3 -m unittest discover -s tests -p test_web.py`. Install `requirements-hosted.lock` to run the full local and hosted suite.
 
 The server binds to `127.0.0.1` only. The static guide can be hosted separately, but GitHub Pages cannot run this Python backend; its lookup form would be unavailable there. Do not expose the server directly to the public internet.
 
