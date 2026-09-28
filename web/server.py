@@ -99,7 +99,7 @@ class Handler(BaseHTTPRequestHandler):
         host = self.headers.get("Host", "")
         allowed = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
         origin = self.headers.get("Origin")
-        return host in allowed and (not origin or origin in {"http://" + h for h in allowed})
+        return host in allowed and (not origin or origin == "http://" + host)
 
     def do_POST(self):
         if self.path != "/api/lookup":

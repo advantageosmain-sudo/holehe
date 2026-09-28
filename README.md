@@ -242,12 +242,12 @@ Built for educational purposes only.
 
 ## Static project guide in this fork
 
-This fork includes a four-page documentation site in [`site/`](site/) and a reusable repository website builder in [`.github/agents/site-builder-orchestrator.md`](.github/agents/site-builder-orchestrator.md). The static pages do not run checks; the optional local backend receives one submitted address in memory to perform an authorized check.
+This fork includes a five-page documentation site in [`site/`](site/) and a reusable repository website builder in [`.github/agents/site-builder-orchestrator.md`](.github/agents/site-builder-orchestrator.md). The static pages do not run checks; the optional local backend receives one submitted address in memory to perform an authorized check.
 
 - Build and validate: `python3 scripts/site-builder/build.py`
 - Preview: `python3 -m http.server 8000 --directory dist`, then open `http://localhost:8000/`
 - Edit content in `site/index.html` and each route's `index.html`; edit shared styles in `site/style.css`.
-- Generated output is `dist/` and is gitignored. There are no site dependencies or environment variables.
+- Generated output is `dist/` and is gitignored. The static site has no dependencies or environment variables; the optional local backend requires `HOLEHE_ALLOWED_EMAIL`.
 - Deployment and maintenance: [`docs/site-builder/deployment.md`](docs/site-builder/deployment.md) and [`docs/site-builder/validation.md`](docs/site-builder/validation.md).
 - For a later repository-to-website run, give ChatGPT Work this repository and request [the builder prompt](.github/prompts/build-site.md). The repository-local roles and skills are instructions to follow, not automatically installed personal agents.
 

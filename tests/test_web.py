@@ -49,6 +49,10 @@ class WebTests(unittest.TestCase):
         self.assertEqual(self.request('owner@example.com', 'https://untrusted.example')[0], 403)
         self.assertEqual(self.calls, [])
 
+    def test_alias_mismatch_rejected(self):
+        self.assertEqual(self.request("owner@example.com", f"http://localhost:{self.server.server_port}")[0], 403)
+        self.assertEqual(self.calls, [])
+
     def test_form_served_and_no_traversal(self):
         with urlopen(self.base + '/lookup/') as response:
             self.assertIn(b'lookup-form', response.read())
