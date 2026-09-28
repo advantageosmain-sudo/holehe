@@ -29,7 +29,7 @@
     "sourceDirectory": "web",
     "entrypoint": "web.hosted:create_app",
     "buildCommand": "docker build -f Dockerfile.railway -t holehe-api .",
-    "deploymentConfig": "railway.json",
+    "deploymentConfig": "Railway service dashboard: Dockerfile path /Dockerfile.railway, health check /healthz, one replica",
     "replicas": 1,
     "healthcheckPath": "/healthz",
     "authenticatedHealthPath": "/health",
@@ -37,6 +37,6 @@
   },
   "externalDeployment": {
     "status": "BLOCKED",
-    "blocker": "Railway GitHub app authorization for this repository, selected permitted email, runtime secrets and verified HTTPS domain are required."
+    "blocker": "GitHub Mobile verification timed out during scoped Railway GitHub app installation. Source connection, owner-permitted email, runtime secret, service deployment and HTTPS domain remain."
   }
 }

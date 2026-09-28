@@ -268,7 +268,7 @@ The server binds to `127.0.0.1` only. The static guide can be hosted separately,
 
 ### Railway backend for the private Sites interface
 
-The hosted adapter is `web/hosted.py`. Railway reads `railway.json` and builds `Dockerfile.railway`; no database is required. The container runs one non-root Uvicorn worker and accepts only authenticated requests for one permitted email address. The original loopback server above remains available.
+The hosted adapter is `web/hosted.py`. Railway builds `Dockerfile.railway` after the Dockerfile path and health check are set in the service dashboard; no database is required. New Railway services no longer accept the legacy `railway.json` config file. The container runs one non-root Uvicorn worker and accepts only authenticated requests for one permitted email address. The original loopback server above remains available.
 
 - Install hosted/test dependencies: `python3 -m pip install -r requirements-hosted.lock` (Python 3.12).
 - Validate: `python3 -m unittest discover -s tests` and `python3 scripts/site-builder/build.py`.
