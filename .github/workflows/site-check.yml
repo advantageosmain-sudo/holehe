@@ -7,6 +7,10 @@ on:
       - 'scripts/site-builder/**'
       - 'web/**'
       - 'tests/**'
+      - 'requirements-hosted.lock'
+      - 'Dockerfile.railway'
+      - 'railway.json'
+      - '.dockerignore'
       - '.github/workflows/site-check.yml'
   pull_request:
     paths:
@@ -15,6 +19,10 @@ on:
       - 'scripts/site-builder/**'
       - 'web/**'
       - 'tests/**'
+      - 'requirements-hosted.lock'
+      - 'Dockerfile.railway'
+      - 'railway.json'
+      - '.dockerignore'
       - '.github/workflows/site-check.yml'
 jobs:
   build:
@@ -25,8 +33,20 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Validate and build static site
         run: python3 scripts/site-builder/build.py
-      - name: Test local backend without network lookups
+      - name: Install pinned backend dependencies
+        run: python3 -m pip install -r requirements-hosted.lock
+      - name: Test local and hosted backends without live lookups
         run: python3 -m unittest discover -s tests
+      - name: Build Railway image
+        run: docker build -f Dockerfile.railway -t holehe-railway-test .
+      - name: Smoke test Railway startup
+        env:
+          LOOKUP_API_TOKEN: ci-test-token-for-startup-check-only-00000000
+          HOLEHE_ALLOWED_EMAIL: owner@example.com
+        run: |
+          docker run -d --name holehe-smoke -p 127.0.0.1:18765:8000 -e LOOKUP_API_TOKEN -e HOLEHE_ALLOWED_EMAIL holehe-railway-test
+          trap 'docker logs holehe-smoke; docker rm -f holehe-smoke' EXIT
+          python3 scripts/site-builder/check_hosted_startup.py

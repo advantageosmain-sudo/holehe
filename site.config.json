@@ -18,9 +18,25 @@
     "setup.py",
     "LICENSE.md"
   ],
-  "deploymentTarget": "Local loopback server; public deployment not configured",
+  "deploymentTarget": "Railway authenticated API; private ChatGPT Sites interface; static guide remains local",
   "environmentVariables": [
-    "HOLEHE_ALLOWED_EMAIL"
+    "HOLEHE_ALLOWED_EMAIL",
+    "LOOKUP_API_TOKEN"
   ],
-  "status": "COMPLETE"
+  "status": "DEPLOYMENT_BLOCKED",
+  "backend": {
+    "framework": "FastAPI / Uvicorn",
+    "sourceDirectory": "web",
+    "entrypoint": "web.hosted:create_app",
+    "buildCommand": "docker build -f Dockerfile.railway -t holehe-api .",
+    "deploymentConfig": "railway.json",
+    "replicas": 1,
+    "healthcheckPath": "/healthz",
+    "authenticatedHealthPath": "/health",
+    "lookupPath": "/api/lookup"
+  },
+  "externalDeployment": {
+    "status": "BLOCKED",
+    "blocker": "Railway sign-in, project connection, selected permitted email, runtime settings and verified HTTPS domain are required."
+  }
 }
