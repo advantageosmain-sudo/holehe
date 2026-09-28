@@ -3,7 +3,6 @@ import hmac
 import importlib
 import json
 import os
-import re
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -11,7 +10,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
-EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\Z")
+LOCAL_CHARS = frozenset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._%+-")
+DOMAIN_CHARS = frozenset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-")
+
+
+def valid_email(value):
+    if not isinstance(value, str) or not 3 <= len(value) <= 254 or value.count("@") != 1:
+        return False
+    local, domain = value.split("@")
+    if not 1 <= len(local) <= 64 or not all(c in LOCAL_CHARS for c in local):
+        return False
+    labels = domain.split(".")
+    return (len(domain) <= 253 and len(labels) >= 2 and
+            len(labels[-1]) >= 2 and labels[-1].isascii() and labels[-1].isalpha() and
+            all(0 < len(label) <= 63 and label[0] != "-" and label[-1] != "-" and
+                all(c in DOMAIN_CHARS for c in label) for label in labels))
 DEFAULT_MODULES = ("github", "gravatar", "wordpress")
 MODULE_PATHS = {
     "github": "programing.github",
@@ -54,7 +67,7 @@ class LookupServer(ThreadingHTTPServer):
     daemon_threads = True
 
     def __init__(self, address, allowed_email, scanner=scan, clock=time.monotonic):
-        if not EMAIL.fullmatch(allowed_email):
+        if not valid_email(allowed_email):
             raise ValueError("Set HOLEHE_ALLOWED_EMAIL to one valid email address")
         super().__init__(address, Handler)
         self.allowed_email = allowed_email
@@ -103,7 +116,7 @@ class Handler(BaseHTTPRequestHandler):
             email = data.get("email") if isinstance(data, dict) else None
         except (ValueError, TypeError, UnicodeDecodeError, json.JSONDecodeError):
             return self.send_json(400, {"error": "Invalid request"})
-        if not isinstance(email, str) or not EMAIL.fullmatch(email):
+        if not isinstance(email, str) or not valid_email(email):
             return self.send_json(400, {"error": "Enter a valid email address"})
         if not hmac.compare_digest(email.casefold(), self.server.allowed_email.casefold()):
             return self.send_json(403, {"error": "This address is not enabled for this local server"})

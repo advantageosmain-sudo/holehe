@@ -4,7 +4,7 @@ import unittest
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from web.server import LookupServer
+from web.server import LookupServer, valid_email
 
 
 class WebTests(unittest.TestCase):
@@ -54,6 +54,10 @@ class WebTests(unittest.TestCase):
             self.assertIn(b'lookup-form', response.read())
         with self.assertRaises(HTTPError):
             urlopen(self.base + '/lookup/../../README.md')
+
+    def test_long_invalid_address_rejected_without_regex_backtracking(self):
+        self.assertFalse(valid_email("%" * 100000 + "@example.com"))
+        self.assertFalse(valid_email("a@" + "a." * 100000))
 
     def test_server_requires_allowlist(self):
         with self.assertRaises(ValueError):
