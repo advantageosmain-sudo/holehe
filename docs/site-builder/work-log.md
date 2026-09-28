@@ -29,3 +29,11 @@ CI continuation: The image built successfully and all thirteen tests passed. The
 PR #3 merged as `e246095c17fb0c1a8e195321f95164a6c614da18`. Final implementation head `30468c4cfcede12de15869f166ece5a6bdd8e550` passed GitHub Site check run `36446258329` (dependency install, thirteen tests, static build, Docker build and startup/authentication smoke checks) and CodeQL run `36446258449`. No unresolved review threads were returned. The startup retry repair passed.
 
 Railway sign-in succeeded; its dashboard shows a trial workspace. Prepared GitHub app authorization with only `advantageosmain-sudo/holehe` selected, but did not click Install & Authorize. Browser confirmation is required to grant new repository access. No backend service, production credential, paid subscription or live lookup was created. Updated deployment documentation and the manifest with the exact remaining blocker. Next action: obtain the scoped GitHub app authorization, choose the owner-permitted address, configure the Railway service and matching private Sites runtime values, then verify live health and an intentional lookup.
+
+## 2026-09-28 16:27 UTC — Railway project setup and config correction
+
+Owner approved the Railway GitHub app for only `advantageosmain-sudo/holehe`. Clicking Install & Authorize led to GitHub sudo confirmation. The owner selected GitHub Mobile, but the verification request timed out; repository authorization did not complete. Do not treat the app as installed.
+
+Created private Railway project `Holehe` (ID `79d59f56-a9fc-412b-b23f-d1628e6d330d`) and offline service `holehe-api` (ID `977bc658-8985-459a-9491-6413be3534f8`). Staged Dockerfile builder, `/Dockerfile.railway` path, and `/healthz` check; the service has no source, runtime variables or live deployment. One replica is shown. No paid upgrade, live lookup or production secret was used.
+
+Railway now deprecates legacy Config as Code for new services. Removed the unused `railway.json` and corrected the README, deployment docs, architecture and manifest to reflect the actual dashboard configuration. Next action: choose another GitHub sudo method or retry GitHub Mobile when the owner is available; then connect this fork, configure the permitted address and matching secure token in Railway and Sites, deploy, verify health and perform an intentional lookup.

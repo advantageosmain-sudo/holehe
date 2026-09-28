@@ -2,18 +2,18 @@
 
 ## Current deployment model
 
-The fork keeps its static guide and optional loopback server. The private ChatGPT Sites interface runs separately as `holehe-project-guide`; it proxies requests from its server to this repository's authenticated Railway API. The browser never receives the API token. Railway is the selected backend host. Railway sign-in is complete. GitHub app authorization, project connection, runtime values and a verified HTTPS domain are still required; no hosted backend URL is assumed.
+The fork keeps its static guide and optional loopback server. The private ChatGPT Sites interface runs separately as `holehe-project-guide`; it proxies requests from its server to this repository's authenticated Railway API. The browser never receives the API token. Railway is the selected backend host. Railway sign-in is complete, and a private `Holehe` project with an offline `holehe-api` service exists. GitHub app authorization, source connection, runtime values and a verified HTTPS domain are still required; no hosted backend URL is assumed.
 
 ## Railway backend
 
-Connect this GitHub repository's `master` branch in Railway, using the repository root. `railway.json` selects `Dockerfile.railway`, one US East replica, and the `/healthz` readiness path. The image installs `requirements-hosted.lock`, runs as a non-root user, and starts one Uvicorn worker on Railway's `PORT`. Keep one replica and one worker: the concurrency lock and five-minute cooldown are in process memory and reset at restart. There is no database or lookup history.
+Connect this GitHub repository's `master` branch to the existing `holehe-api` service in the private `Holehe` Railway project, using the repository root. In service settings, select the Dockerfile builder, set Dockerfile Path to `/Dockerfile.railway`, Healthcheck Path to `/healthz`, and keep one replica. These settings are staged in the current Railway service; apply them after source connection and valid variables. Railway deprecated Config as Code for new services in August 2026, so this repository does not include a `railway.json` that the new service would ignore. The image installs `requirements-hosted.lock`, runs as a non-root user, and starts one Uvicorn worker on Railway's `PORT`. Keep one replica and one worker: the concurrency lock and five-minute cooldown are in process memory and reset at restart. There is no database or lookup history.
 
 Set these Railway runtime variables outside Git:
 
 - `LOOKUP_API_TOKEN`: a randomly generated secret with at least 32 ASCII characters. Use a password manager or secure secret generator; never use the synthetic CI test token.
 - `HOLEHE_ALLOWED_EMAIL`: the single address the owner has chosen and is authorized to check.
 
-The process fails closed when either setting is absent or invalid. `.env.example` lists variable names only and is not loaded automatically. Do not add real values to source, build arguments, screenshots or logs. Select only this repository if Railway requests GitHub app access. Any paid plan or account terms require the owner's action.
+The process fails closed when either setting is absent or invalid. `.env.example` lists variable names only and is not loaded automatically. Do not add real values to source, build arguments, screenshots or logs. GitHub app authorization has `advantageosmain-sudo/holehe` selected as the only repository, but GitHub Mobile sudo verification timed out; complete that verification before connecting the source. Any paid plan or account terms require the owner's action.
 
 After deployment, generate Railway's HTTPS domain and verify `/healthz` returns `{"status":"ok"}`. Verify `/health` returns HTTP 401 without a bearer token and HTTP 200 with the configured token. These checks do not contact lookup providers. The lookup endpoint is `POST /api/lookup` with JSON `{"email":"the permitted address"}` and an `Authorization: Bearer ...` header. Provider results are limited to GitHub, Gravatar and WordPress status fields. Requests have a 1 KiB limit, concurrent checks are rejected, and each provider has a 20-second deadline. No recovery details are returned. The application disables access logs; Railway's own telemetry is controlled by Railway.
 
