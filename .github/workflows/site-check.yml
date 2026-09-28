@@ -48,5 +48,5 @@ jobs:
           HOLEHE_ALLOWED_EMAIL: owner@example.com
         run: |
           docker run -d --name holehe-smoke -p 127.0.0.1:18765:8000 -e LOOKUP_API_TOKEN -e HOLEHE_ALLOWED_EMAIL holehe-railway-test
-          trap 'docker rm -f holehe-smoke' EXIT
+          trap 'docker logs holehe-smoke; docker rm -f holehe-smoke' EXIT
           python3 scripts/site-builder/check_hosted_startup.py

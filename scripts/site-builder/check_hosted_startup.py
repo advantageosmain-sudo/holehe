@@ -2,7 +2,8 @@
 import json
 import os
 import time
-from urllib.error import HTTPError, URLError
+from http.client import HTTPException
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 BASE = "http://127.0.0.1:18765"
@@ -11,7 +12,7 @@ for attempt in range(30):
         with urlopen(BASE + "/healthz", timeout=2) as response:
             assert json.load(response) == {"status": "ok"}
         break
-    except (URLError, TimeoutError):
+    except (OSError, HTTPException):
         if attempt == 29:
             raise
         time.sleep(1)
